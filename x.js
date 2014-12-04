@@ -38,7 +38,9 @@
 		members = members.concat(casper.evaluate(scrape));
 	}).thenClick('a#dnn_ctr699_ViewDynamicUser_lbNext', function() {
 		members = members.concat(casper.evaluate(scrape));
-		console.log(members.length);
+		console.log(casper.evaluate(function(members) {
+			return $.csv.fromObjects(members);
+		}, members));
 	});
 
 	casper.run();
