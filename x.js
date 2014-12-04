@@ -4,7 +4,9 @@
 (function() {
 	"use strict";
 
-	var casper = require('casper').create();
+	var casper = require('casper').create({
+		clientScripts:['./jquery.csv.js']
+	}), members = [];
 
 	casper.start('http://www.mava.org/Membership/MAVA-Members.aspx', function() {
 		casper.evaluate(function(sel, val) {
@@ -15,7 +17,7 @@
 	});
 
 	casper.then(function() {
-		var members = casper.evaluate(function() {
+		members.push(casper.evaluate(function() {
 			var x=$('#dnn_ctr699_ViewDynamicUser_dlUsers tr'), member = [];
 			x=x.slice(1, x.length-1);
 			x.each(function(i, v) {
@@ -28,9 +30,14 @@
 					www : telEmailWeb[2]
 				});
 			});
-			return member;
-		});
-		console.log(JSON.stringify(members, null, '\t'));
+			// return as CSV
+			return $.csv.fromObjects(member);
+		}));
+		console.log(members);
+	}).then(function() {
+		this.click('a#dnn_ctr699_ViewDynamicUser_lbNext');
+	}).then(function() {
+		casper.capture('shot.png');
 	});
 
 	casper.run();
