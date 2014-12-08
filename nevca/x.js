@@ -14,9 +14,17 @@
 				var $ = jQuery;
 
 				$('ul.company-list li.company-item').each(function(i, v) {
+					var members = [];
+					$('li.team-member-item', v).each(function(j, u) {
+						members.push({
+							name : $('.views-field-field-profile-lname', u).text().trim(),
+							sector : $('.views-field-field-profile-sector', u).text().trim()
+						});
+					});
 					firms.push({
 						name : $('h2', v).text().trim(),
-						a : $('.connect-title a').attr('href')
+						a : $('.connect-title a', v).attr('href'),
+						members : members
 					});
 				});
 
