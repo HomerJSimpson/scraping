@@ -15,6 +15,8 @@
 
 				$('ul.company-list li.company-item').each(function(i, v) {
 					firms.push({
+						name : $('h2', v).text().trim(),
+						a : $('.connect-title a').attr('href')
 					});
 				});
 
@@ -35,6 +37,7 @@
 			console.log('currentUrl: ' + currentUrl);
 			this.run(check);
 		} else {
+			this.echo(JSON.stringify(firms, null, '\t'));
 			this.echo('Done!');
 			this.exit();
 		}
